@@ -4,6 +4,10 @@
 
 问题2 visdom连接失败--在另一个终端连接visdom服务器
 python -m visdom.server -port 8091/8095/8097
+先激活conda
+conda activate DAD
+(DAD) wordma@wordma-B250M-D3H:~/桌面/实验复现/DA_dahazing$ python -m visdom.server -port 8094
+
 
 训练阶段
 一、训练CycleGAN
