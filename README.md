@@ -71,3 +71,16 @@ contains fifteen real outdoor scenes, for each of which five different weather c
 As opposed to prior datasets that made use of synthetically generated images or indoor images with unrealistic parameters for haze simulation, 
 our outdoor dataset allows for more realistic simulation of haze with parameters that are physically realistic and justified by scattering theory. 
 All images are of high resolution, typically six to eight megapixels. 
+
+<img width="1629" height="780" alt="image" src="https://github.com/user-attachments/assets/aa38ef77-af0e-46a0-a347-0055854992d9" />
+<img width="1590" height="566" alt="image" src="https://github.com/user-attachments/assets/aa158ba8-b736-4dbc-b36a-6a29103de0c3" />
+<img width="1784" height="680" alt="image" src="https://github.com/user-attachments/assets/cf7866b3-7812-454b-98dc-189aed01de46" />
+ 天空，边缘
+<img width="1720" height="633" alt="image" src="https://github.com/user-attachments/assets/984e968c-0115-44f1-8f5d-899c9f693857" />
+伪影
+<img width="1033" height="421" alt="image" src="https://github.com/user-attachments/assets/83c8b484-3ef8-4ca9-a5af-22a962c5a641" />
+S_dehazing
+<img width="1036" height="413" alt="image" src="https://github.com/user-attachments/assets/09b07124-fe31-4fb5-8bf6-db63d00cc086" />
+D
+<img width="1030" height="415" alt="image" src="https://github.com/user-attachments/assets/67d31322-fd5a-4f14-8154-c9f166879b72" />
+TV DCP
