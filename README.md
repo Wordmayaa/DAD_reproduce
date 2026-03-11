@@ -78,9 +78,24 @@ All images are of high resolution, typically six to eight megapixels.
  天空，边缘
 <img width="1720" height="633" alt="image" src="https://github.com/user-attachments/assets/984e968c-0115-44f1-8f5d-899c9f693857" />
 伪影
+<img width="1620" height="782" alt="image" src="https://github.com/user-attachments/assets/6a52954f-f1b0-44e1-80b9-82151c061414" />
+最后一次训练
 <img width="1033" height="421" alt="image" src="https://github.com/user-attachments/assets/83c8b484-3ef8-4ca9-a5af-22a962c5a641" />
 S_dehazing
 <img width="1036" height="413" alt="image" src="https://github.com/user-attachments/assets/09b07124-fe31-4fb5-8bf6-db63d00cc086" />
 D
 <img width="1030" height="415" alt="image" src="https://github.com/user-attachments/assets/67d31322-fd5a-4f14-8154-c9f166879b72" />
 TV DCP
+
+
+四、Train DA_dehazing using the pretrained Fr, Fs and CycleGAN.
+python train.py  --dataroot ./datasets/dehazing --name run_danet_depth --epoch_count 1 --niter 50 --lambda_S 1 --lambda_R 1 --lambda_identity 0.1 --lambda_Dehazing 10 --lambda_Dehazing_Con 0.1 --lambda_Dehazing_DC 1e-2 --lambda_Dehazing_TV 1e-3 --learn_residual --resize_or_crop crop --display_freq 100 --print_freq 100 --display_port 8094 --niter_decay 0 --fineSize 256 --no_html --batchSize 2   --gpu_id 0 --update_ratio 1 --unlabel_decay 0.99 --save_epoch_freq 1 --model danet --S_Dehazing_premodel ./checkpoints/run_fs_depth/netS_Dehazing.pth --R_Dehazing_premodel ./checkpoints/run_fr_depth/netR_Dehazing.pth --g_s2r_premodel ./checkpoints/run_cyclegan_depth/netG_A.pth --g_r2s_premodel ./checkpoints/run_cyclegan/netG_B.pth --d_r_premodel ./checkpoints/run_cyclegan/netD_A.pth --d_s_premodel ./checkpoints/run_cyclegan/netD_B.pth
+<img width="1460" height="517" alt="image" src="https://github.com/user-attachments/assets/be71099b-9c57-438e-a1e3-edea1c9aea57" />
+含文字
+
+<img width="1409" height="574" alt="image" src="https://github.com/user-attachments/assets/5c84e8ec-40b5-4113-a78e-2bbdc115a1e8" />
+
+
+
+
+后续各模块的PSNR、SSIM、无监督指标测量  +  消融
