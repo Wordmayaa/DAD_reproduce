@@ -3,6 +3,7 @@
 问题1 加载图片的键没有C，但用于测试的是C--用A，B替代在S/RDehazeNet的set_input
 
 问题2 visdom连接失败--在另一个终端连接visdom服务器
+python -m visdom.server -port 8091/8095/8097
 
 训练阶段
 一、训练CycleGAN
@@ -25,9 +26,48 @@ visdom
 
 2.通过观测过程有哪些启发可以改进？如何改进？
 1）学习率是不变的，可不可以改为退火余弦？loss会不会降低
-2）
+2）损失可以改进
 3.如何评估训练的结果好坏？
 1）PSNR,SSIM
 2）图像本身
+3）增加评估指标：LPIPS、FID（生成效果）、'NIQE'、'BRISQUE'
 4.消融实验
 1）如果没有深度图，损失以及可视化效果如何？
+
+
+其他思考：
+问题：每次做测试的时候想从几千张图里找出作者文中出现的图测试，只能一个个找，能不能有现成的app,导入所有的图片然后输入文字查找？
+还是自己训一个CLIP（或微调）？
+
+
+/home/wordma/桌面/实验复现/DA_dahazing/checkpoints/run_cyclegan
+/home/wordma/桌面/实验复现/DA_dahazing/datasets/dehazing
+/home/wordma/下载/tropy-1.17.3-x64
+
+二、训练Train Fr using the pretrained CycleGAN
+python train.py  --dataroot ./datasets/dehazing --name run_fr_depth --lambda_Dehazing 10 --lambda_Dehazing_DC 1e-2 --lambda_Dehazing_TV 1e-2 --learn_residual --resize_or_crop crop --display_freq 100 --print_freq 100 --display_port 8090  --epoch_count 1 --niter 90 --niter_decay 0 --fineSize 256 --no_html --batchSize 2   --gpu_id 3 --update_ratio 1 --unlabel_decay 0.99 --save_epoch_freq 1 --model RDehazingnet --g_s2r_premodel ./checkpoints/run_cyclegan/netG_A.pth  
+注意加载的模型是G不是D
+完整epoch：
+python train.py  --dataroot ./datasets/dehazing --name run_fr_depth --lambda_Dehazing 10 --lambda_Dehazing_DC 1e-2 --lambda_Dehazing_TV 1e-2 --learn_residual --resize_or_crop crop --display_freq 100 --print_freq 100 --display_port 8090  --epoch_count 1 --niter 90 --niter_decay 0 --fineSize 256 --no_html --batchSize 2   --gpu_id 0 --update_ratio 1 --unlabel_decay 0.99 --save_epoch_freq 1 --model RDehazingnet --g_s2r_premodel ./checkpoints/run_cyclegan/latest_netG_A.pth  
+
+测试小epoch
+python train.py  --dataroot ./datasets/dehazing --name run_fr_depth --lambda_Dehazing 10 --lambda_Dehazing_DC 1e-2 --lambda_Dehazing_TV 1e-2 --learn_residual --resize_or_crop crop --display_freq 100 --print_freq 100 --display_port 8090  --epoch_count 1 --niter 3 --niter_decay 0 --fineSize 256 --no_html --batchSize 2   --gpu_id 0 --update_ratio 1 --unlabel_decay 0.99 --save_epoch_freq 1 --model RDehazingnet --g_s2r_premodel ./checkpoints/run_cyclegan/latest_netG_A.pth  
+
+
+
+三、Train Fs using the pretrained CycleGAN
+python train.py  --dataroot ./datasets/dehazing --name run_fs_depth --lambda_Dehazing 10 --lambda_Dehazing_DC 1e-2 --lambda_Dehazing_TV 1e-2 --learn_residual --resize_or_crop crop --display_freq 100 --print_freq 100 --display_port 8094  --epoch_count 1 --niter 90 --niter_decay 0 --fineSize 256 --no_html --batchSize 2   --gpu_id 0 --update_ratio 1 --unlabel_decay 0.99 --save_epoch_freq 1 --model SDehazingnet --g_r2s_premodel ./checkpoints/run_cyclegan/netG_B.pth 
+
+
+
+
+test datasets
+SOTS :SYN
+Hazerd : SYN + REAL？
+https://labsites.rochester.edu/gsharma/research/computer-vision/hazerd/
+https://docs.google.com/forms/d/e/1FAIpQLSdCz7X7wnyJo3A_CRBZ5Aqd_ZOAcNEPUesg88Lnqd2XSYpZNw/viewform
+HazeRD
+contains fifteen real outdoor scenes, for each of which five different weather conditions are simulated. 
+As opposed to prior datasets that made use of synthetically generated images or indoor images with unrealistic parameters for haze simulation, 
+our outdoor dataset allows for more realistic simulation of haze with parameters that are physically realistic and justified by scattering theory. 
+All images are of high resolution, typically six to eight megapixels. 
