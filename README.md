@@ -1,4 +1,4 @@
-# DAD_reproduce
+<img width="1639" height="806" alt="图片" src="https://github.com/user-attachments/assets/503f32de-6d02-429c-8790-a0b386b5ec91" /># DAD_reproduce
 测试阶段
 问题1 加载图片的键没有C，但用于测试的是C--用A，B替代在S/RDehazeNet的set_input
 
@@ -99,7 +99,62 @@ python train.py  --dataroot ./datasets/dehazing --name run_danet_depth --epoch_c
 
 <img width="1409" height="574" alt="image" src="https://github.com/user-attachments/assets/5c84e8ec-40b5-4113-a78e-2bbdc115a1e8" />
 
+训练过程中断
+接着已训练部分，加上PSNR记录，均值和SSIM正确计算
+python train.py  --dataroot ./datasets/dehazing --name run_danet_depth --epoch_count 5 --niter 50 --lambda_S 1 --lambda_R 1 --lambda_identity 0.1 --lambda_Dehazing 10 --lambda_Dehazing_Con 0.1 --lambda_Dehazing_DC 1e-2 --lambda_Dehazing_TV 1e-3 --learn_residual --resize_or_crop crop --display_freq 100 --print_freq 100 --display_port 8094 --niter_decay 0 --fineSize 256 --no_html --batchSize 2   --gpu_id 0 --update_ratio 1 --unlabel_decay 0.99 --save_epoch_freq 1 --model danet --S_Dehazing_premodel ./checkpoints/run_fs_depth/netS_Dehazing.pth --R_Dehazing_premodel ./checkpoints/run_fr_depth/netR_Dehazing.pth --g_s2r_premodel ./checkpoints/run_cyclegan_depth/netG_A.pth --g_r2s_premodel ./checkpoints/run_cyclegan/netG_B.pth --d_r_premodel ./checkpoints/run_cyclegan/netD_A.pth --d_s_premodel ./checkpoints/run_cyclegan/netD_B.pth
+
+python train.py \
+  --dataroot ./datasets/dehazing \
+  --name run_danet_depth \
+  --epoch_count 5 \  # 从第5个epoch开始（假设你训练到了第4个epoch）
+  --niter 50 \
+  --lambda_S 1 \
+  --lambda_R 1 \
+  --lambda_identity 0.1 \
+  --lambda_Dehazing 10 \
+  --lambda_Dehazing_Con 0.1 \
+  --lambda_Dehazing_DC 1e-2 \
+  --lambda_Dehazing_TV 1e-3 \
+  --learn_residual \
+  --resize_or_crop crop \
+  --display_freq 100 \
+  --print_freq 100 \
+  --display_port 8094 \
+  --niter_decay 0 \
+  --fineSize 256 \
+  --no_html \
+  --batchSize 2 \
+  --gpu_id 0 \
+  --update_ratio 1 \
+  --unlabel_decay 0.99 \
+  --save_epoch_freq 1 \
+  --model danet \
+  --S_Dehazing_premodel ./checkpoints/run_fs_depth/netS_Dehazing.pth \
+  --R_Dehazing_premodel ./checkpoints/run_fr_depth/netR_Dehazing.pth \
+  --g_s2r_premodel ./checkpoints/run_cyclegan_depth/netG_A.pth \
+  --g_r2s_premodel ./checkpoints/run_cyclegan/netG_B.pth \
+  --d_r_premodel ./checkpoints/run_cyclegan/netD_A.pth \
+  --d_s_premodel ./checkpoints/run_cyclegan/netD_B.pth \
+  --continue_train  # 添加这个参数从latest恢复
 
 
+最终loss曲线
+<img width="1046" height="473" alt="图片" src="https://github.com/user-attachments/assets/cc7f62d1-c60b-4aac-bba3-a92eea53f6c2" />
+s2r_dehazing
+
+<img width="1037" height="430" alt="图片" src="https://github.com/user-attachments/assets/73c4a0ac-1b04-43b3-a97a-41b536702881" />
+G_S2R
 
 后续各模块的PSNR、SSIM、无监督指标测量  +  消融
+
+测试
+<img width="1530" height="914" alt="图片" src="https://github.com/user-attachments/assets/2828606a-d945-4af5-81f0-fdb7f130cfb1" />
+
+syn域测试：图像去雾后与gt很相似，但部分天空部分的图片边缘有伪影，且整体更亮
+
+<img width="1579" height="646" alt="图片" src="https://github.com/user-attachments/assets/e6b5503c-e9a1-4791-babb-9bc20a8fd7dd" />
+<img width="1664" height="586" alt="图片" src="https://github.com/user-attachments/assets/d756740a-e53d-4ad3-b434-93e8ef6c1ee4" />
+异常case:天空部分有奇怪的橙色，但提供的测试模型没有该问题
+<img width="1639" height="806" alt="图片" src="https://github.com/user-attachments/assets/d1398d95-7a41-4586-802f-7f63cb002deb" />
+
+去雾不彻底：<img width="1528" height="868" alt="图片" src="https://github.com/user-attachments/assets/03b3593a-110a-4722-81f0-000fdd18f76e" />
